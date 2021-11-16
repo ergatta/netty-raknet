@@ -123,7 +123,9 @@ public final class FrameData extends AbstractReferenceCounted implements FramedP
 
     public boolean isFragment() {
         return fragment;
-    }    public void setReliability(FramedPacket.Reliability reliability) {
+    }
+
+    public void setReliability(FramedPacket.Reliability reliability) {
         this.reliability = reliability;
     }
 

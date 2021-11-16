@@ -51,10 +51,14 @@ public class FrameOrderIn extends MessageToMessageDecoder<Frame> {
         protected int lastOrderIndex = -1;
         protected int lastSequenceIndex = -1;
 
+        /*
+        Sequenced frames are a special type of ordered frame that will
+        empty the ordering queue of everything before them.
+         */
         protected void decodeSequenced(Frame frame, List<Object> list) {
             if (UINT.B3.minusWrap(frame.getSequenceIndex(), lastSequenceIndex) > 0) {
                 lastSequenceIndex = frame.getSequenceIndex();
-                //remove earlier packets from queue
+                //remove earlier ordered packets from queue
                 while (UINT.B3.minusWrap(frame.getOrderIndex(), lastOrderIndex) > 1) {
                     ReferenceCountUtil.release(queue.remove(lastOrderIndex));
                     lastOrderIndex = UINT.B3.plus(lastOrderIndex, 1);
